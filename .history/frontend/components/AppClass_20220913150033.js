@@ -4,20 +4,16 @@ import axios from 'axios'
 
 
 // Suggested initial states
-const initialMessage = ''
+const initialMessage = '(2,2)'
 const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
-const initialX = 2
-const initialY = 2
 
 const initialState = {
   message: initialMessage,
   email: initialEmail,
   index: initialIndex,
   steps: initialSteps,
-  x: initialX,
-  y: initialY
 }
 
 export default class AppClass extends React.Component {
@@ -33,118 +29,43 @@ export default class AppClass extends React.Component {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
     if(this.state.index === 0){
-      this.setState({...this.state, x: 1, y:1})
       return "(1,1)"
       
     }
     else if(this.state.index === 1){
-      this.setState({...this.state, x: 2, y:1})
-      return "(2,1)"
+       return "(2,1)"
       
     }
     else if(this.state.index === 2){
-      this.setState({...this.state, x: 3, y:1})
       return "(3,1)"
       
     }
     else if(this.state.index === 3){
-      this.setState({...this.state, x: 1, y:2})
-      return "(1,2)"
+     return "(1,2)"
     }
     else if(this.state.index === 4){
-      this.setState({...this.state, x: 2, y:2})
       return initialMessage
     }
     else if(this.state.index === 5){
-      this.setState({...this.state, x: 3, y:2})
-      return "(3,2)"
+       return "(3,2)"
     }
     else if(this.state.index === 6){
-      this.setState({...this.state, x: 1, y:3})
       return "(1,3)"
     }
     else if(this.state.index === 7){
-      this.setState({...this.state, x: 2, y:3})
       return "(2,3)"
     }
     else if(this.state.index === 8){
-      this.setState({...this.state, x: 3, y:3})
-      return "(3,3)"
+       return "(3,3)"
     }
   }
 
   
-  setX(){
-    if(this.state.index === 0){
-      return 1
-      
-    }
-    else if(this.state.index === 1){
-       return 2
-      
-    }
-    else if(this.state.index === 2){
-      return 3
-      
-    }
-    else if(this.state.index === 3){
-     return 1
-    }
-    else if(this.state.index === 4){
-      return initialX
-    }
-    else if(this.state.index === 5){
-       return 3
-    }
-    else if(this.state.index === 6){
-      return 1
-    }
-    else if(this.state.index === 7){
-      return 2
-    }
-    else if(this.state.index === 8){
-       return 3
-    }
-  }
-
-  setY(){
-    if(this.state.index === 0){
-      return 1
-      
-    }
-    else if(this.state.index === 1){
-       return 1
-      
-    }
-    else if(this.state.index === 2){
-      return 1
-      
-    }
-    else if(this.state.index === 3){
-     return 2
-    }
-    else if(this.state.index === 4){
-      return initialY
-    }
-    else if(this.state.index === 5){
-       return 2
-    }
-    else if(this.state.index === 6){
-      return 3
-    }
-    else if(this.state.index === 7){
-      return 3
-    }
-    else if(this.state.index === 8){
-       return 3
-    }
-  }
 
 
 
   reset = () => {
-    this.setState({...this.state, index: 4, steps: 0, email:'', message: "" });
-    
+    this.setState({...this.state, index: 4});
   }
 
   getNextIndex = (direction) => {
@@ -152,52 +73,39 @@ export default class AppClass extends React.Component {
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
     if (direction === "left" && this.state.index != 0 && this.state.index != 3 && this.state.index != 6){
-      this.setState({...this.state, message: initialEmail})
+       console.log(this.state.index - 1)
         return this.state.index - 1
     }
     else if (direction === "right" && this.state.index != 2 && this.state.index != 5 && this.state.index != 8){
-      this.setState({...this.state, message: ""})
+      console.log(this.state.index + 1)
         return this.state.index + 1
     }
     else if (direction === "up" && this.state.index != 0 && this.state.index != 1 && this.state.index != 2){
-      this.setState({...this.state, message: ""})
+      console.log(this.state.index - 3)
        return this.state.index - 3
     }
     else if (direction === "down" && this.state.index != 6 && this.state.index != 7 && this.state.index != 8){
-      this.setState({...this.state, message: ""})
+      console.log(this.state.index + 3)
        return this.state.index + 3
     }
     else {
-        this.setState({...this.state, message: `You can't go ${direction}`})
-       return null
+      console.log(this.state.index)
+       return this.state.index
     }
-  }
-
-  count(number){
-      if(number === null){
-        return this.state.index
-      }else{
-        this.setState({...this.state, index: number, steps: (this.state.steps + 1)})
-      }
   }
 
   move = (evt) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-       this.count(this.getNextIndex(evt.target.id)) 
-  }
-
-  setXY = () => {
-    this.setState({...this.state, })
-    console.log(this.state.x, this.state.y);
-  }
+    console.log(this.getNextIndex(evt.target.id))
+    this.setState({...this.state, index: this.getNextIndex(evt.target.id)})
+   }
 
    componentDidUpdate(prevProps, prevState) {
     if (prevState.index !== this.state.index) {
-      this.setState({...this.state,  x:this.setX(), y:this.setY() })
+      this.setState({...this.state, message: this.getXY(), steps: (this.state.steps + 1)})
     }
   }
-  
 
   onChange = (evt) => {
     evt.preventDefault()
@@ -206,22 +114,7 @@ export default class AppClass extends React.Component {
   }
 
   onSubmit = (evt) => {
-    evt.preventDefault()
-    if(this.state.email === ""){
-      this.setState({...this.state, message: "Ouch: email is required"})
-    }
-    else if(this.state.email === "bad@email"){
-      this.setState({...this.state, message: "Ouch: email must be a valid email"})
-    }
-    else if(this.state.email === "foo@bar.baz"){
-      this.setState({...this.state, message: "foo@bar.baz failure #71"})
-    }
-    else{
-    axios.post('http://localhost:9000/api/result', this.state)
-    .then(res => this.setState({...this.state, message: res.data.message, email:''}))
-    .catch(err => console.log(err))
-    }
-
+    axios.post('http://localhost:9000/api/result')
   }
 
   render() {
@@ -229,8 +122,8 @@ export default class AppClass extends React.Component {
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates {`(${this.state.x}, ${this.state.y})`}</h3>
-          <h3 id="steps">{this.state.steps === 1 ? `You moved ${this.state.steps} time`: `You moved ${this.state.steps} times`}</h3>
+          <h3 id="coordinates">Coordinates {this.state.message}</h3>
+          <h3 id="steps">You moved {this.state.steps} times</h3>
         </div>
         <div id="grid">
           {
@@ -242,7 +135,7 @@ export default class AppClass extends React.Component {
           }
         </div>
         <div className="info">
-          <h3 id="message">{this.state.message}</h3>
+          <h3 id="message"></h3>
         </div>
         <div id="keypad">
           <button id="left" onClick={this.move}>LEFT</button>
@@ -251,7 +144,7 @@ export default class AppClass extends React.Component {
           <button id="down" onClick={this.move} >DOWN</button>
           <button id="reset" onClick={this.reset}>reset</button>
         </div>
-        <form onSubmit={this.onSubmit}>
+        <form>
           <input id="email" type="email" placeholder="type email" value={this.state.email} onChange={this.onChange}></input>
           <input id="submit" type="submit"></input>
         </form>

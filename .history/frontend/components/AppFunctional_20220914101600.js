@@ -137,7 +137,7 @@ export default function AppFunctional(props) {
 
   function reset() {
     // Use this helper to reset all states to their initial values.
-    setData({...data, index: 4, steps: 0, message:'', email: ""})
+    setData({...data, index: 4, steps: 0, message:''})
   }
 
   function getNextIndex(direction) {
@@ -188,25 +188,14 @@ export default function AppFunctional(props) {
     setData({...data, email: evt.target.value});
     console.log(data.email)
   }
- 
+
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
-    
-    if(data.email === ""){
-      setData({...data, message: "Ouch: email is required"})
-    }
-    else if(data.email === "bad@email"){
-      setData({...data, message: "Ouch: email must be a valid email"})
-    }
-    else if(data.email === "foo@bar.baz"){
-      setData({...data, message: "foo@bar.baz failure #71"})
-    }
-    else{
     axios.post('http://localhost:9000/api/result', data)
-    .then(res => setData({...data, message: res.data.message, email:''}))
+    .then(res => setData({...data, message: res.data.message}))
     .catch(err => console.log(err))
-    }
+    setData({...data, email: initialEmail})
     
   }
 
@@ -214,7 +203,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinates {`(${data.x}, ${data.y})`}</h3>
-        <h3 id="steps">{data.steps === 1 ? `You moved ${data.steps} time`: `You moved ${data.steps} times`}</h3>
+        <h3 id="steps">You moved {data.steps} times</h3>
       </div>
       <div id="grid">
         {

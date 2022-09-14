@@ -211,7 +211,7 @@ export default class AppClass extends React.Component {
       this.setState({...this.state, message: "Ouch: email is required"})
     }
     else if(this.state.email === "bad@email"){
-      this.setState({...this.state, message: "Ouch: email must be a valid email"})
+      this.setState({...this.state, message: "Ouch: email must be valid email"})
     }
     else if(this.state.email === "foo@bar.baz"){
       this.setState({...this.state, message: "foo@bar.baz failure #71"})

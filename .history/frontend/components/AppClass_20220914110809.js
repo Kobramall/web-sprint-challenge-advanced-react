@@ -143,7 +143,7 @@ export default class AppClass extends React.Component {
 
 
   reset = () => {
-    this.setState({...this.state, index: 4, steps: 0, email:'', message: "" });
+    this.setState({...this.state, index: 4, steps: 0, email:'' });
     
   }
 
@@ -152,7 +152,7 @@ export default class AppClass extends React.Component {
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
     if (direction === "left" && this.state.index != 0 && this.state.index != 3 && this.state.index != 6){
-      this.setState({...this.state, message: initialEmail})
+      this.setState({...this.state, message: ""})
         return this.state.index - 1
     }
     else if (direction === "right" && this.state.index != 2 && this.state.index != 5 && this.state.index != 8){
@@ -209,9 +209,6 @@ export default class AppClass extends React.Component {
     evt.preventDefault()
     if(this.state.email === ""){
       this.setState({...this.state, message: "Ouch: email is required"})
-    }
-    else if(this.state.email === "bad@email"){
-      this.setState({...this.state, message: "Ouch: email must be a valid email"})
     }
     else if(this.state.email === "foo@bar.baz"){
       this.setState({...this.state, message: "foo@bar.baz failure #71"})

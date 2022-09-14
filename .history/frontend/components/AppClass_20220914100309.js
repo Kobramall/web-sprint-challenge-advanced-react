@@ -143,7 +143,7 @@ export default class AppClass extends React.Component {
 
 
   reset = () => {
-    this.setState({...this.state, index: 4, steps: 0, email:'', message: "" });
+    this.setState({...this.state, index: 4, steps: 0 });
     
   }
 
@@ -152,19 +152,19 @@ export default class AppClass extends React.Component {
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
     if (direction === "left" && this.state.index != 0 && this.state.index != 3 && this.state.index != 6){
-      this.setState({...this.state, message: initialEmail})
+       
         return this.state.index - 1
     }
     else if (direction === "right" && this.state.index != 2 && this.state.index != 5 && this.state.index != 8){
-      this.setState({...this.state, message: ""})
+      
         return this.state.index + 1
     }
     else if (direction === "up" && this.state.index != 0 && this.state.index != 1 && this.state.index != 2){
-      this.setState({...this.state, message: ""})
+      
        return this.state.index - 3
     }
     else if (direction === "down" && this.state.index != 6 && this.state.index != 7 && this.state.index != 8){
-      this.setState({...this.state, message: ""})
+      
        return this.state.index + 3
     }
     else {
@@ -194,7 +194,7 @@ export default class AppClass extends React.Component {
 
    componentDidUpdate(prevProps, prevState) {
     if (prevState.index !== this.state.index) {
-      this.setState({...this.state,  x:this.setX(), y:this.setY() })
+      this.setState({...this.state, message: this.getXY(), x:this.setX(), y:this.setY() })
     }
   }
   
@@ -207,20 +207,10 @@ export default class AppClass extends React.Component {
 
   onSubmit = (evt) => {
     evt.preventDefault()
-    if(this.state.email === ""){
-      this.setState({...this.state, message: "Ouch: email is required"})
-    }
-    else if(this.state.email === "bad@email"){
-      this.setState({...this.state, message: "Ouch: email must be a valid email"})
-    }
-    else if(this.state.email === "foo@bar.baz"){
-      this.setState({...this.state, message: "foo@bar.baz failure #71"})
-    }
-    else{
+    
     axios.post('http://localhost:9000/api/result', this.state)
-    .then(res => this.setState({...this.state, message: res.data.message, email:''}))
+    .then(res => this.setState({...this.state, message: res.data.message}))
     .catch(err => console.log(err))
-    }
 
   }
 
@@ -230,7 +220,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">Coordinates {`(${this.state.x}, ${this.state.y})`}</h3>
-          <h3 id="steps">{this.state.steps === 1 ? `You moved ${this.state.steps} time`: `You moved ${this.state.steps} times`}</h3>
+          <h3 id="steps">You moved {this.state.steps} times</h3>
         </div>
         <div id="grid">
           {

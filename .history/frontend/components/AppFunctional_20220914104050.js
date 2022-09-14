@@ -188,19 +188,12 @@ export default function AppFunctional(props) {
     setData({...data, email: evt.target.value});
     console.log(data.email)
   }
- 
+
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
-    
     if(data.email === ""){
       setData({...data, message: "Ouch: email is required"})
-    }
-    else if(data.email === "bad@email"){
-      setData({...data, message: "Ouch: email must be a valid email"})
-    }
-    else if(data.email === "foo@bar.baz"){
-      setData({...data, message: "foo@bar.baz failure #71"})
     }
     else{
     axios.post('http://localhost:9000/api/result', data)

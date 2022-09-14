@@ -197,7 +197,7 @@ export default function AppFunctional(props) {
       setData({...data, message: "Ouch: email is required"})
     }
     else if(data.email === "bad@email"){
-      setData({...data, message: "Ouch: email must be a valid email"})
+      setData({...data, message: "Ouch: email must be valid email"})
     }
     else if(data.email === "foo@bar.baz"){
       setData({...data, message: "foo@bar.baz failure #71"})

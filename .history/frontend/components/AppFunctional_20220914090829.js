@@ -2,20 +2,16 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
 // Suggested initial states
-const initialMessage = ''
+const initialMessage = '(2,2)'
 const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
-const initialX = 2
-const initialY = 2
 
 const initialState = {
   message: initialMessage,
   email: initialEmail,
   index: initialIndex,
   steps: initialSteps,
-  x: initialX,
-  y: initialY
 }
 
 
@@ -23,40 +19,6 @@ export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
   const [data, setData] = useState(initialState)
-  
-  function setX(){
-    if(data.index === 0){
-      return 1
-      
-    }
-    else if(data.index === 1){
-       return 2
-      
-    }
-    else if(data.index === 2){
-      return 3
-      
-    }
-    else if(data.index === 3){
-     return 1
-    }
-    else if(data.index === 4){
-      return initialX
-    }
-    else if(data.index === 5){
-       return 3
-    }
-    else if(data.index === 6){
-      return 1
-    }
-    else if(data.index === 7){
-      return 2
-    }
-    else if(data.index === 8){
-       return 3
-    }
-  }
-
   
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
@@ -90,44 +52,9 @@ export default function AppFunctional(props) {
     }
     else{ return null }
   }
-  
-  
-  
-  function setY(){
-    if(data.index === 0){
-      return 1
-      
-    }
-    else if(data.index === 1){
-       return 1
-      
-    }
-    else if(data.index === 2){
-      return 1
-      
-    }
-    else if(data.index === 3){
-     return 2
-    }
-    else if(data.index === 4){
-      return initialY
-    }
-    else if(data.index === 5){
-       return 2
-    }
-    else if(data.index === 6){
-      return 3
-    }
-    else if(data.index === 7){
-      return 3
-    }
-    else if(data.index === 8){
-       return 3
-    }
-  }
 
   useEffect(() => {
-    setData({...data, x:setX(), y:setY()})}, [data.index])
+    setData({...data, message: getXY()})}, [data.index])
 
   function getXYMessage() {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
@@ -137,7 +64,7 @@ export default function AppFunctional(props) {
 
   function reset() {
     // Use this helper to reset all states to their initial values.
-    setData({...data, index: 4, steps: 0, message:'', email: ""})
+    setData({...data, index: 4, steps: 0})
   }
 
   function getNextIndex(direction) {
@@ -145,24 +72,22 @@ export default function AppFunctional(props) {
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
     if (direction === "left" && data.index != 0 && data.index != 3 && data.index != 6){
-      setData({...data, message: ''});
+
        return data.index - 1
    }
    else if (direction === "right" && data.index != 2 && data.index != 5 && data.index != 8){
-    setData({...data, message: ''});
+     
        return data.index + 1
    }
    else if (direction === "up" && data.index != 0 && data.index != 1 && data.index != 2){
-    setData({...data, message: ''});
+     
       return data.index - 3
    }
    else if (direction === "down" && data.index != 6 && data.index != 7 && data.index != 8){
-     setData({...data, message: ''});
       return data.index + 3
    }
    else {
-        setData({...data, message: `You can't go ${direction}`}); 
-    return null
+      return null
    }
   }
   function count(number){
@@ -170,7 +95,7 @@ export default function AppFunctional(props) {
       return data.index
     }
     else{
-      setData({...data, index: number, steps: (data.steps + 1)})
+      setData({...data, index: number, steps: (this.state.steps + 1)})
     }
   }
 
@@ -188,33 +113,20 @@ export default function AppFunctional(props) {
     setData({...data, email: evt.target.value});
     console.log(data.email)
   }
- 
+
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
-    
-    if(data.email === ""){
-      setData({...data, message: "Ouch: email is required"})
-    }
-    else if(data.email === "bad@email"){
-      setData({...data, message: "Ouch: email must be a valid email"})
-    }
-    else if(data.email === "foo@bar.baz"){
-      setData({...data, message: "foo@bar.baz failure #71"})
-    }
-    else{
     axios.post('http://localhost:9000/api/result', data)
-    .then(res => setData({...data, message: res.data.message, email:''}))
+    .then(res => console.log(res))
     .catch(err => console.log(err))
-    }
-    
   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
-        <h3 id="coordinates">Coordinates {`(${data.x}, ${data.y})`}</h3>
-        <h3 id="steps">{data.steps === 1 ? `You moved ${data.steps} time`: `You moved ${data.steps} times`}</h3>
+        <h3 id="coordinates">Coordinates {data.message}</h3>
+        <h3 id="steps">You moved {data.steps} times</h3>
       </div>
       <div id="grid">
         {
@@ -226,7 +138,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message">{data.message}</h3>
+        <h3 id="message"></h3>
       </div>
       <div id="keypad">
         <button id="left" onClick={move}  >LEFT</button>

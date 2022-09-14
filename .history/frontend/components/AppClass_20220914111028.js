@@ -143,7 +143,7 @@ export default class AppClass extends React.Component {
 
 
   reset = () => {
-    this.setState({...this.state, index: 4, steps: 0, email:'', message: "" });
+    this.setState({...this.state, index: 4, steps: 0, email:'' });
     
   }
 
@@ -209,9 +209,6 @@ export default class AppClass extends React.Component {
     evt.preventDefault()
     if(this.state.email === ""){
       this.setState({...this.state, message: "Ouch: email is required"})
-    }
-    else if(this.state.email === "bad@email"){
-      this.setState({...this.state, message: "Ouch: email must be a valid email"})
     }
     else if(this.state.email === "foo@bar.baz"){
       this.setState({...this.state, message: "foo@bar.baz failure #71"})
